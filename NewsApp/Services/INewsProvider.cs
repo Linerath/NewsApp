@@ -10,7 +10,7 @@ namespace NewsApp.Services
     {
         IEnumerable<News> GetNews();
         News GetNews(int id);
-        void AddNews(News news);
+        int AddNews(News news);
         void DeleteNews(int id);
         void UpdateNews(News news);
     }

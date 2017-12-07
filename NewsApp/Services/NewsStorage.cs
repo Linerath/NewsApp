@@ -19,12 +19,15 @@ namespace NewsApp.Services
             connectionString = configuration.GetConnectionString("MySqlConnectionString");
         }
 
-        public void AddNews(News news)
+        public int AddNews(News news)
         {
             using (IDbConnection db = new MySqlConnection(connectionString))
             {
                 var sqlQuery = "INSERT INTO news (heading, text, creationDate, category) VALUES(@Heading, @Text, @CreationDate, @Category)";
-                db.Execute(sqlQuery, news);
+                var id = db.Query<int>(sqlQuery, news);
+                return id;
+                int? newsId = db.Query<int>(sqlQuery, news).FirstOrDefault();
+                return newsId.Value;
             }
         }
 
@@ -33,7 +36,7 @@ namespace NewsApp.Services
             using (IDbConnection db = new MySqlConnection(connectionString))
             {
                 var sqlQuery = "DELETE FROM news WHERE id = @id";
-                db.Execute(sqlQuery, new { id });
+                db.ExecuteAsync(sqlQuery, new { id });
             }
         }
 
