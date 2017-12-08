@@ -37,6 +37,10 @@ namespace NewsApp.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]News news)
         {
+            if (!ModelState.IsValid)
+            {
+                return new BadRequestResult();
+            }
             var id = newsProvider.AddNews(news);
             return new ObjectResult(id);
         }

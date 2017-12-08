@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using NewsApp.Services;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using NewsApp.Models;
 
 namespace NewsApp
 {
@@ -25,7 +28,8 @@ namespace NewsApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<INewsProvider, NewsStorage>();
-            services.AddMvc();
+            services.AddMvc().AddFluentValidation();
+            services.AddTransient<IValidator<News>, NewsValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
