@@ -23,11 +23,8 @@ namespace NewsApp.Services
         {
             using (IDbConnection db = new MySqlConnection(connectionString))
             {
-                var sqlQuery = "INSERT INTO news (heading, text, creationDate, category) VALUES(@Heading, @Text, @CreationDate, @Category)";
-                var id = db.Query<int>(sqlQuery, news);
-                return id;
-                int? newsId = db.Query<int>(sqlQuery, news).FirstOrDefault();
-                return newsId.Value;
+                var sqlQuery = "INSERT INTO news (heading, text, creationDate, category) VALUES(@Heading, @Text, @CreationDate, @Category); SELECT LAST_INSERT_ID()";
+                return db.Query<int>(sqlQuery, news).FirstOrDefault();
             }
         }
 
