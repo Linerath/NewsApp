@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using NewsApp.Services;
 using FluentValidation.AspNetCore;
 using FluentValidation;
+using AutoMapper;
 using NewsApp.Models;
 
 namespace NewsApp
@@ -30,6 +31,7 @@ namespace NewsApp
             services.AddTransient<INewsProvider, NewsStorage>();
             services.AddMvc().AddFluentValidation();
             services.AddTransient<IValidator<News>, NewsValidator>();
+            services.AddAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +43,7 @@ namespace NewsApp
             }
 
             app.UseMvc();
+
 
             app.Run(async (context) =>
             {
