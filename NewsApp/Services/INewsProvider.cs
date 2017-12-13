@@ -8,10 +8,10 @@ namespace NewsApp.Services
 {
     public interface INewsProvider
     {
-        IEnumerable<News> GetNews();
-        News GetNews(int id);
-        int AddNews(News news);
-        void DeleteNews(int id);
-        void UpdateNews(News news);
+        Task<IEnumerable<News>> GetNews();
+        Task<News> GetNews(int id);
+        Task<int> AddNews(News news);
+        Task DeleteNews(int id);
+        Task UpdateNews(News news);
     }
 }

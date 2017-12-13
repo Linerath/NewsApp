@@ -19,46 +19,46 @@ namespace NewsApp.Services
             connectionString = configuration.GetConnectionString("MySqlConnectionString");
         }
 
-        public int AddNews(News news)
+        public async Task<int> AddNews(News news)
         {
             using (IDbConnection db = new MySqlConnection(connectionString))
             {
                 var sqlQuery = "INSERT INTO news (heading, text, creationDate, category) VALUES(@Heading, @Text, @CreationDate, @Category); SELECT LAST_INSERT_ID()";
-                return db.Query<int>(sqlQuery, news).FirstOrDefault();
+                return await db.QueryFirstOrDefaultAsync<int>(sqlQuery, news);
             }
         }
 
-        public void DeleteNews(int id)
+        public async Task DeleteNews(int id)
         {
             using (IDbConnection db = new MySqlConnection(connectionString))
             {
                 var sqlQuery = "DELETE FROM news WHERE id = @id";
-                db.ExecuteAsync(sqlQuery, new { id });
+                await db.ExecuteAsync(sqlQuery, new { id });
             }
         }
 
-        public IEnumerable<News> GetNews()
+        public async Task<IEnumerable<News>> GetNews()
         {
             using (IDbConnection db = new MySqlConnection(connectionString))
             {
-                return db.Query<News>("SELECT * FROM news").ToList();
+                return await db.QueryAsync<News>("SELECT * FROM news"); /*ToList();*/
             }
         }
 
-        public News GetNews(int id)
+        public async Task<News> GetNews(int id)
         {
             using (IDbConnection db = new MySqlConnection(connectionString))
             {
-                return db.Query<News>("SELECT * FROM news WHERE id = @id", new { id }).FirstOrDefault();
+                return await db.QueryFirstOrDefaultAsync<News>("SELECT * FROM news WHERE id = @id", new { id });
             }
         }
 
-        public void UpdateNews(News news)
+        public async Task UpdateNews(News news)
         {
             using (IDbConnection db = new MySqlConnection(connectionString))
             {
                 var sqlQuery = "UPDATE news SET heading = @Heading, text = @Text, creationDate = @CreationDate, category = @Category WHERE id = @Id";
-                db.Execute(sqlQuery, news);
+                await db.ExecuteAsync(sqlQuery, news);
             }
         }
     }

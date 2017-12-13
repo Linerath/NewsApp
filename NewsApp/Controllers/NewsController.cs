@@ -19,34 +19,33 @@ namespace NewsApp.Controllers
         }
 
         [HttpGet]
-        //[Route("/[controller]")]
-        public IActionResult GetNews()
+        public async Task<IActionResult> GetNews()
         {
-            var model = newsProvider.GetNews();
+            var model = await newsProvider.GetNews();
             return new ObjectResult(model);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetNews(int id)
+        public async Task<IActionResult> GetNews(int id)
         {
-            var model = newsProvider.GetNews(id);
+            var model = await newsProvider.GetNews(id);
             return new ObjectResult(model);
         }
 
         [Route("add")]
         [HttpPost]
-        public IActionResult Post([FromBody]News news)
+        public async Task<IActionResult> Post([FromBody]News news)
         {
             if (!ModelState.IsValid)
             {
                 return new BadRequestResult();
             }
-            var id = newsProvider.AddNews(news);
+            var id = await newsProvider.AddNews(news);
             return new ObjectResult(id);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]News news)
+        public async Task<IActionResult> Put(int id, [FromBody]News news)
         {
             if (!ModelState.IsValid)
             {
@@ -56,13 +55,15 @@ namespace NewsApp.Controllers
             {
                 return new BadRequestResult();
             }
-            return null;
+            await newsProvider.UpdateNews(news);
+            return new OkResult();
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            newsProvider.DeleteNews(id);
+            await newsProvider.DeleteNews(id);
+            return new OkResult();
         }
     }
 }
